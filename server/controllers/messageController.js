@@ -1,8 +1,10 @@
 
 // Get all users except the logged in user
 
+import cloudinary from "../lib/cloudinary.js";
 import Message from "../models/Message.js";
 import User from "../models/User.js";
+import { io, userSocketMap } from "../server.js";
 
 export const getUsersForSidebar = async (req,res) => {
     try {
@@ -33,3 +35,81 @@ export const getUsersForSidebar = async (req,res) => {
     }
     
 }
+
+// Get allmessages for selected user
+export const getMessage = async (req,res) => {
+    try {
+       const { id: selectedUserId } = req.params; 
+       const myId = req.user._id;
+       const messages = await Message.find({
+         $or: [
+           { senderId: myId, receiverId: selectedUserId },
+           { senderId: selectedUserId, receiverId: myId },
+         ],
+       });
+       await Message.updateMany({senederId:selectedUserId,receiverId:myId},
+        {seen:true}
+       )
+       res.json({success:true,messages});
+    } catch (error) {
+        console.log(error.message);
+        res.json({
+          success: false,
+          message: error.message,
+        }); 
+    }
+    
+}
+
+//  API to mark message as seen using message id
+export const markMessageAsSeen = async (req,res) => {
+  try {
+    const {id} = req.pqrams;
+    await Message.findByIdAndUpdate(id, {seen:true})
+    res.json({success:true})
+  } catch (error) {
+    console.log(error.message);
+    res.json({
+      success: false,
+      message: error.message,
+    }); 
+  }
+}
+
+//  Send message to selected user
+export const sendMessage = async (req,res) => {
+  try {
+    const {text,image} = req.body;
+    const receiverId = req.param.id;
+    const senderId = req.user_id;
+
+    let imageUrl;
+    if(image){
+      const uploadResponse = await cloudinary.uploader.upload(image)
+      imageUrl = uploadResponse.secure_url;
+    }
+    const newMessage = await Message.createSearchIndex({
+      senederId,receiverId,text,image:imageUrl
+    })
+// Emit the new nessage to the receiver's socket
+const receiverSocketId = userSocketMap[receiverId];
+if(receiverSocketId){
+  io.to(receiverSocketId).emit("newMessage", newMessage)
+}
+
+    res.json({
+      success: true,
+      newMessage
+    }); 
+
+  } catch (error) {
+    console.log(error.message);
+    res.json({
+      success: false,
+      message: error.message,
+    }); 
+  }
+}
+
+
+
