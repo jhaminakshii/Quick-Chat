@@ -4,6 +4,8 @@
 import cloudinary from "../lib/cloudinary.js";
 import { generateToken } from "../lib/utils.js";
 import User from "../models/User.js";
+import bcrypt from 'bcryptjs'; // if using ESM
+
 
 export const signup = async(req,res)=>{
     const {fullName, email, password, bio} = req.body;
