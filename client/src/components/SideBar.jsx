@@ -1,9 +1,26 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import assets, { userDummyData } from '../assets/assets';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
+import { ChatContext } from '../../context/ChatContext';
 
-const SideBar = ({selectedUser, setSelectedUser }) => {
+
+const SideBar = () => {
+  const {getUsers, users, selectedUser
+    ,unseenMessages, setUnseenMessages } = useContext(ChatContext);
+
+  const {logout, onlineUsers} = useContext(AuthContext);
+
+  const [input, setInput] = useState(false)
+
   const navigate = useNavigate();
+
+  const filteredUsers = input
+    ? users.filter((user) =>
+        user.fullName.toLowerCase().includes(input.toLowerCase())
+      )
+    : users;
+
   return (
     <div
       className={`bg-[#8185B2]/10 h-full p-5 rounded-r-xl
@@ -30,7 +47,8 @@ const SideBar = ({selectedUser, setSelectedUser }) => {
                 Edit Profile
               </p>
               <hr className=" my-2 border-t border-gray-500" />
-              <p className="cursor-pointer text-sm">Logout</p>
+              <p onClick={()=> logout()}
+               className="cursor-pointer text-sm">Logout</p>
             </div>
           </div>
         </div>
@@ -39,7 +57,7 @@ const SideBar = ({selectedUser, setSelectedUser }) => {
           gap-2 py-3 px-4 mt-5 "
         >
           <img src={assets.search_icon} alt="search" className="w-3" />
-          <input
+          <input onChange={(e)=>setInput(e.target.value)}
             type="text"
             className=" bg-transparent border-none outline-none
            text-white text-xm placeholder-[#c8c8c8] flex-1"
@@ -48,7 +66,7 @@ const SideBar = ({selectedUser, setSelectedUser }) => {
         </div>
       </div>
       <div className=" flex flex-col">
-        {userDummyData.map((user, index) => (
+        {filteredUsers.map((user, index) => (
           <div
             onClick={() => {
               setSelectedUser(user);
