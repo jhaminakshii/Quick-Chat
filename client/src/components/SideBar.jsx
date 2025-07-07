@@ -96,7 +96,7 @@ const SideBar = () => {
                 <span className=" text-neutral-400 text-xs">Offline</span>
               )}
             </div>
-            {unseenMessages[user._id] > 0 && (
+            {(unseenMessages?.[user._id] ?? 0) > 0 && (
               <p
                 className=" absolute top-4 right-4
                   text-xs h-5 w-5 flex justify-center items-center rounded-full
