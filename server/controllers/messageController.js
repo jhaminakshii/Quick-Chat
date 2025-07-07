@@ -80,7 +80,7 @@ export const markMessageAsSeen = async (req,res) => {
 export const sendMessage = async (req,res) => {
   try {
     const {text,image} = req.body;
-    const receiverId = req.param.id;
+    const receiverId = req.params.id;
     const senderId = req.user_id;
 
     let imageUrl;
@@ -89,7 +89,7 @@ export const sendMessage = async (req,res) => {
       imageUrl = uploadResponse.secure_url;
     }
     const newMessage = await Message.createSearchIndex({
-      senederId,receiverId,text,image:imageUrl
+      senderId,receiverId,text,image:imageUrl
     })
 // Emit the new nessage to the receiver's socket
 const receiverSocketId = userSocketMap[receiverId];
