@@ -50,7 +50,7 @@ const ChatContainer = () => {
     if (scrollEnd.current && messages) {
       scrollEnd.current.scrollIntoView({ behaviour: "smooth" });
     }
-  }, []);
+  }, [messages]);
   return selectedUser ? (
     <div className="h-full overflow-scroll relative backdrop-blur-lg">
       {/*---- Header ------*/}
