@@ -8,6 +8,9 @@ messageRouter.get("/users", protectRoute, getUsersForSidebar);
 messageRouter.get("/:id", protectRoute, getMessage);
 messageRouter.put("mark/:id", protectRoute, markMessageAsSeen);
 messageRouter.post("send/:id", protectRoute, sendMessage);
+// in routes/messageRoutes.js (or similar)
+// messageRouter.get("/users", protectRoute, getUsers);
+
 
 
 export default messageRouter;
