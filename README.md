@@ -13,8 +13,6 @@ It enables users to exchange messages instantly and provides a simple, interacti
 - Clean and responsive user interface  
 - Easy to run locally (client + server)
 
----
-
 ## 📦 Tech Stack
 
 - **Frontend**: React  
@@ -22,7 +20,13 @@ It enables users to exchange messages instantly and provides a simple, interacti
 - **Real-time**: Socket.IO  
 - **Styling**: Tailwind CSS
 - **Database / Persistence**:  MongoDB
-- **Environment Variables**: List any `.env` keys (e.g. `PORT`, `SOCKET_URL`, etc.)
+- **Environment Variables**:
+   - MONGODB_URI=
+   - PORT=
+   - JWT_SECRET=
+   - CLOUDINARY_CLOUD_NAME=
+   - CLOUDINARY_API_KEY=
+   - CLOUDINARY_API_SECRET=
 
 ---
 
