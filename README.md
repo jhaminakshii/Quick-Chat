@@ -37,12 +37,14 @@ It enables users to exchange messages instantly and provides a simple, interacti
    git clone https://github.com/jhaminakshii/Quick-Chat.git
    cd Quick-Chat
    
-2. **Open Server Side**  
+2. **Open Server Side**
+   ```bash
       cd server
       npm install
       npm start
 
-3. **Open client Side** (open a new terminal)
+4. **Open client Side** (open a new terminal)
+   ```bash
       cd ../client
       npm install
       npm run dev
